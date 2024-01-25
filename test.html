@@ -21,9 +21,6 @@
         <label for="file">File:</label>
         <input type="file" multiple="multiple" id="file" name="file" required>
 
-        <label for="imageUrls">Image URLs:</label>
-        <textarea id="imageUrls" name="imageUrls" rows="5" required></textarea>
-
         <button type="submit">Submit</button>
     </form>
 
@@ -31,15 +28,15 @@
         document.getElementById('productForm').addEventListener('submit', async function (event) {
             event.preventDefault();
 
-            let imageUrlsArray = [
-                "imageUrls",
-                "kokok",
-                "yhyhy"
-            ];
+            // let imageUrlsArray = [
+            //     "imageUrls",
+            //     "kokok",
+            //     "yhyhy"
+            // ];
 
             const productName = document.getElementById('productName').value;
             const productCategory = document.getElementById('productCategory').value;
-            const imageUrls = document.getElementById('imageUrls').value;
+            
 
             // Get the file input element
             const fileInput = document.getElementById('file');
@@ -53,15 +50,14 @@
             // Get the first file (assuming single file upload)
             const file = fileInput.files[0];
 
-            const imgArray = imageUrls.split(',').map(url => url.trim())
-
+           
             try {
                 // Create FormData object to handle file upload
                 const formData = new FormData();
                 formData.append('title', productName);
                 formData.append('category', productCategory);
                 formData.append('file', file);
-                formData.append('imagecuy', JSON.stringify(imgArray));
+                
 
                 const response = await fetch('http://localhost:5000/api/products', {
                     method: 'POST',
