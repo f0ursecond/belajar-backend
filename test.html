@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Form</title>
+</head>
+
+<body>
+
+    <h1>Product Form</h1>
+
+    <form id="productForm">
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" required>
+
+        <label for="productCategory">Product Category:</label>
+        <input type="text" id="productCategory" name="productCategory" required>
+
+        <label for="file">File:</label>
+        <input type="file" multiple="multiple" id="file" name="file" required>
+
+        <label for="imageUrls">Image URLs:</label>
+        <textarea id="imageUrls" name="imageUrls" rows="5" required></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('productForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            let imageUrlsArray = [
+                "imageUrls",
+                "kokok",
+                "yhyhy"
+            ];
+
+            const productName = document.getElementById('productName').value;
+            const productCategory = document.getElementById('productCategory').value;
+            const imageUrls = document.getElementById('imageUrls').value;
+
+            // Get the file input element
+            const fileInput = document.getElementById('file');
+
+            // Check if a file is selected
+            if (!fileInput.files || fileInput.files.length === 0) {
+                console.error('No file selected');
+                return;
+            }
+
+            // Get the first file (assuming single file upload)
+            const file = fileInput.files[0];
+
+            const imgArray = imageUrls.split(',').map(url => url.trim())
+
+            try {
+                // Create FormData object to handle file upload
+                const formData = new FormData();
+                formData.append('title', productName);
+                formData.append('category', productCategory);
+                formData.append('file', file);
+                formData.append('imagecuy', JSON.stringify(imgArray));
+
+                const response = await fetch('http://localhost:5000/api/products', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const responseBody = await response.text();
+                console.log('Response from server:', responseBody);
+
+                if (response.ok) {
+                    const responseData = JSON.parse(responseBody);
+                    console.log('Product created successfully:', responseData);
+                } else {
+                    console.error('Failed to create product:', response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
