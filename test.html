@@ -11,7 +11,7 @@
 
     <h1>Product Form</h1>
 
-    <form id="productForm">
+    <form id="productForm" enctype="multipart/form-data">
         <label for="productName">Product Name:</label>
         <input type="text" id="productName" name="productName" required>
 
@@ -19,7 +19,7 @@
         <input type="text" id="productCategory" name="productCategory" required>
 
         <label for="file">File:</label>
-        <input type="file" multiple="multiple" id="file" name="file" required>
+        <input type="file" multiple id="file" name="file" required>
 
         <button type="submit">Submit</button>
     </form>
@@ -27,38 +27,25 @@
     <script>
         document.getElementById('productForm').addEventListener('submit', async function (event) {
             event.preventDefault();
-
-            // let imageUrlsArray = [
-            //     "imageUrls",
-            //     "kokok",
-            //     "yhyhy"
-            // ];
-
             const productName = document.getElementById('productName').value;
             const productCategory = document.getElementById('productCategory').value;
-            
-
-            // Get the file input element
+            let imagecok;
             const fileInput = document.getElementById('file');
 
-            // Check if a file is selected
             if (!fileInput.files || fileInput.files.length === 0) {
                 console.error('No file selected');
                 return;
             }
 
-            // Get the first file (assuming single file upload)
-            const file = fileInput.files[0];
 
-           
             try {
-                // Create FormData object to handle file upload
                 const formData = new FormData();
                 formData.append('title', productName);
                 formData.append('category', productCategory);
-                formData.append('file', file);
-                
-
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    const file = fileInput.files[i]
+                    formData.append('file', file);
+                }
                 const response = await fetch('http://localhost:5000/api/products', {
                     method: 'POST',
                     body: formData,
@@ -76,6 +63,7 @@
             } catch (error) {
                 console.error('Error:', error.message);
             }
+
         });
     </script>
 
