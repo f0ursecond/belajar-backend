@@ -35,14 +35,14 @@ CREATE TABLE `product` (
   `url` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `imagecuy` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`imagecuy`))
+  `imageUrl` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`imageUrl`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `category`, `image`, `url`, `createdAt`, `updatedAt`, `imagecuy`) VALUES
+INSERT INTO `product` (`id`, `name`, `category`, `image`, `url`, `createdAt`, `updatedAt`, `imageUrl`) VALUES
 (45, 'Fujifilm XT 16', 'camera', '40e61c6a1addd376ce6de984503e76db.png', 'http://localhost:5000/images/40e61c6a1addd376ce6de984503e76db.png', '2024-01-25 09:29:56', '2024-01-25 09:29:56', '[\"http://localhost:5000/images/40e61c6a1addd376ce6de984503e76db.png\"]');
 
 --

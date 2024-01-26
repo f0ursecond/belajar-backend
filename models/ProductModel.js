@@ -13,11 +13,13 @@ const Product = db.define(
     },
     name: DataTypes.STRING,
     category: DataTypes.STRING,
-    image: DataTypes.STRING,
-    url: DataTypes.STRING,
-    imagecuy: {
+    image: {
       type: DataTypes.JSON,
-      allowNull: true,
+      defaultValue: []
+    },
+    imageUrl: {
+      type: DataTypes.JSON,
+      defaultValue: []
     },
   },
   {
