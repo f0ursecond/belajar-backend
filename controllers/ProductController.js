@@ -2,7 +2,42 @@ import Product from "../models/ProductModel.js";
 import path from "path";
 import fs from "fs";
 import jwt from "jsonwebtoken";
+import { uploadFile } from "@uploadcare/upload-client";
 const secretKey = 'my_secret_key';
+
+
+export const processImageUpload = async (files) => {
+    try {
+        const { file, size } = files;
+        const ext = path.extname(file.name);
+        const fileName = `${file.md5}${ext}`;
+        const allowedType = [".png", ".jpg", ".jpeg"];
+
+        if (!allowedType.includes(ext.toLowerCase())) {
+            throw new Error("Invalid Image Type");
+        }
+        if (size > 5000000) {
+            throw new Error("Image must be less than 5 MB");
+        }
+
+        const uploadcareResponse = await uploadFile(file.path, {
+            publicKey: 'YOUR_PUBLIC_KEY',
+            store: 'auto',
+            filename: fileName,
+            metadata: {
+                subsystem: 'uploader',
+                pet: 'cat'
+            }
+        });
+
+        const uploadedImageUrl = uploadcareResponse.originalFilename;
+        fs.unlinkSync(file.path)
+
+        return uploadedImageUrl;
+    } catch (error) {
+
+    }
+}
 
 
 export const authenticateToken = async (req, res, next) => {
