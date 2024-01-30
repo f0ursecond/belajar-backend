@@ -6,6 +6,8 @@ const saltRounds = 10;
 let token = "";
 const secretKey = 'my_secret_key';
 
+//ANJAYYY
+
 export const register = async (req, res) => {
     try {
         const { username, password } = req.body;
