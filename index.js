@@ -13,12 +13,13 @@ app.use(express.static("public"));
 app.use(ProductRoute);
 app.use(UserRoute);
 
+
 app.get('/', (req, res) => {
     res.send('Hello, this is the root path!');
 });
 
-app.get('/api'(req, res => {
-    res.send('HALO WORLD')
-}))
+app.get('/api', (req, res) => {
+    res.send('Hello, this /api!');
+});
 
 app.listen(5000, () => console.log("Server Up and Running..."));
