@@ -33,7 +33,7 @@ export const getProducts = async (req, res) => {
         const simplifiedResponse = response.map((product) => ({
             id: product.id,
             name: product.name,
-            imageUrl: JSON.parse(product.imageUrl),
+            imageUrl: product.imageUrl,
         }));
         res.json(simplifiedResponse);
     } catch (error) {
