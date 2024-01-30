@@ -1,20 +1,44 @@
 import Product from "../models/ProductModel.js";
 import path from "path";
 import fs from "fs";
+import jwt from "jsonwebtoken";
+const secretKey = 'my_secret_key';
+
+
+export const authenticateToken = async (req, res, next) => {
+    try {
+        const token = req.headers['authorization']?.split(" ")[1];
+        if (!token) return res.status(401).json({ msg: 'Unathorized' });
+
+        jwt.verify(token, secretKey, (err, decoded) => {
+            if (err) return res.status(401).json({ msg: 'Unauthorized' })
+            req.userId = decoded;
+            next();
+        });
+    } catch (error) {
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+        }
+
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'Unauthorized: Token expired' });
+        }
+        return res.status(500).json({ msg: `Internal Server Error cok ${error.message}` });
+    }
+}
 
 export const getProducts = async (req, res) => {
     try {
         const response = await Product.findAll();
-
         const simplifiedResponse = response.map((product) => ({
             id: product.id,
             name: product.name,
             imageUrl: JSON.parse(product.imageUrl),
         }));
-
         res.json(simplifiedResponse);
     } catch (error) {
-        console.log(error.message);
+        console.log(`Error get Products ${error.message}`);
+        res.status(400).json({ msg: `Error ${error.message}` })
     }
 };
 
