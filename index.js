@@ -10,7 +10,11 @@ app.use(cors());
 app.use(express.json());
 app.use(FileUpload());
 app.use(express.static("public"));
-app.use(ProductRoute);
-app.use(UserRoute);
+app.use('/api/products', ProductRoute);
+app.use('/api/users', UserRoute);
+
+app.get('/', (req, res) => {
+    res.send('Hello, this is the root path!');
+});
 
 app.listen(5000, () => console.log("Server Up and Running..."));
