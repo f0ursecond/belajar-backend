@@ -127,9 +127,16 @@ export const saveProduct = async (req, res) => {
             image: mappedImageArray,
             imageUrl: mappedImageUrl,
         });
+
+        const mappedProduct = {
+            id: product.id,
+            name: product.name,
+            imageUrl: product.imageUrl,
+        }
+
         res.status(201).json({
             msg: "Products Created Successfully",
-            products: product,
+            products: mappedProduct,
         });
     } catch (error) {
         console.error(error.message);
