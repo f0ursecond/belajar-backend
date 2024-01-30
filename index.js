@@ -17,4 +17,8 @@ app.get('/', (req, res) => {
     res.send('Hello, this is the root path!');
 });
 
+app.get('/api'(req, res => {
+    res.send('HALO WORLD')
+}))
+
 app.listen(5000, () => console.log("Server Up and Running..."));
