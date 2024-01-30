@@ -68,10 +68,10 @@ export const getProductById = async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        const responseData = response.toJSON();
-        responseData.image = JSON.parse(responseData.image)
-        responseData.imageUrl = JSON.parse(responseData.imageUrl);
-        res.status(200).json(responseData);
+        // const responseData = response.toJSON();
+        // responseData.image = JSON.parse(responseData.image)
+        // responseData.imageUrl = JSON.parse(responseData.imageUrl);
+        res.status(200).json(response);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
