@@ -3,9 +3,11 @@ Simple CRUD Backend I made using Express JS,Mysql & ChatGPT.
 > tipis tipis 🔥 🔥 🔥.\
 >  menyala abangkuh 🔥 🔥 🔥.
 
+Base Url : https://belajar-backend-okev.vercel.app/api
+
 ## Register
 
-endpoint : https://belajar-backend-okev.vercel.app/api/register
+endpoint : /register
 
 method : **`POST`**\
 form-data: **`username`**,**`password`**\
@@ -29,7 +31,7 @@ headers: **`Accept: application/json`**
 
 ## Login
 
-endpoint : https://belajar-backend-okev.vercel.app/api/login
+endpoint : /login
 
 method : **`POST`**\
 form-data: **`username`**,**`password`**\
@@ -45,7 +47,7 @@ headers: **`Accept: application/json`**
 
 ## Get All Products
 
-endpoint : https://belajar-backend-okev.vercel.app/api/products
+endpoint : /products
 
 method : **`GET`**\
 authorization: **`Bearer Token`**\
