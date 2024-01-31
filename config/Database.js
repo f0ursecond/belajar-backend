@@ -7,16 +7,20 @@ const db = new Sequelize(config.DB_NAME, config.DB_USERNAME, config.DB_PASSWORD,
   dialect: "mysql",
   dialectModule: mysql2,
   logging: config.NODE_ENV === 'development' ? true : false,
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000,
-  },
   dialectOptions: {
     connectTimeout: 30000,
     requestTimeout: 30000,
   },
 });
+
+
+db
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.log('Unable to connect to the database:', err);
+  });
 
 export default db;

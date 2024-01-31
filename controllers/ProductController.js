@@ -2,29 +2,9 @@ import Product from "../models/ProductModel.js";
 import path from "path";
 import fs from "fs";
 import jwt from "jsonwebtoken";
+import { uploadFile } from "@uploadcare/upload-client";
+import config from "../config.js";
 const secretKey = 'my_secret_key';
-
-
-export const processImageUpload = async (files) => {
-    try {
-        const { file, size } = files;
-        const ext = path.extname(file.name);
-        const fileName = `${file.md5}${ext}`;
-        const allowedType = [".png", ".jpg", ".jpeg"];
-
-        if (!allowedType.includes(ext.toLowerCase())) {
-            throw new Error("Invalid Image Type");
-        }
-        if (size > 5000000) {
-            throw new Error("Image must be less than 5 MB");
-        }
-
-
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 
 export const authenticateToken = async (req, res, next) => {
     try {
@@ -112,35 +92,45 @@ export const saveProduct = async (req, res) => {
         const imageUrl = [];
 
         for (const file of filesArray) {
-            const { size, name } = file;
+            const fileData = file.data;
             const ext = path.extname(file.name);
-            const fileName = `${file.md5}${ext}`;
-            const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+            // const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
             const allowedType = [".png", ".jpg", ".jpeg"];
 
             if (!allowedType.includes(ext.toLowerCase())) {
                 return res.status(422).json({ msg: "Invalid Images" });
             }
-            if (size > 5000000) {
+            if (file.size > 5000000) {
                 return res.status(422).json({ msg: "Image must be less than 5 MB" });
             }
-            await file.mv(`./public/images/${fileName}`, (err) => {
-                if (err) {
-                    console.error(err.message);
-                    return res.status(500).json({ msg: err.message });
+
+            // await file.mv(`./public/images/${fileName}`, (err) => {
+            //     if (err) {
+            //         console.error(err.message);
+            //         return res.status(500).json({ msg: err.message });
+            //     }
+            // });
+
+            const upload = await uploadFile(fileData, {
+                publicKey: config.PUBLIC_KEY,
+                store: 'auto',
+                fileName: title,
+                metadata: {
+                    subsystem: 'uploader',
+                    pet: 'cat'
                 }
-            });
+            }, (err) => { if (err) return res.json(400).json({ msg: 'Error Upload File' }) })
 
             imageArray.push({
-                fileName,
+                upload
             });
             imageUrl.push({
-                url
+                upload
             })
         }
 
-        let mappedImageArray = imageArray.map(obj => obj.fileName);
-        let mappedImageUrl = imageUrl.map(obj => obj.url);
+        let mappedImageArray = imageArray.map(obj => obj.upload.cdnUrl);
+        let mappedImageUrl = imageUrl.map(obj => obj.upload.cdnUrl);
 
         const product = await Product.create({
             name: title,

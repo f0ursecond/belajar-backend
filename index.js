@@ -5,7 +5,6 @@ import ProductRoute from "./routes/ProductRoute.js";
 import UserRoute from "./routes/UserRoute.js";
 import config from "./config.js";
 
-
 const app = express();
 
 app.use(cors());
@@ -18,20 +17,19 @@ app.use((req, res, next) => {
 });
 
 
-console.log(`NODE_ENV:${config.NODE_ENV}`)
-console.log(`DB NAME:${config.DB_NAME}`)
-
+// console.log(`NODE_ENV:${config.NODE_ENV}`)
+// console.log(`DB NAME:${config.DB_NAME}`)
+// console.log(`PUBLIC KEY:${config.PUBLIC_KEY}`)
 
 app.get('/', (req, res) => {
-    res.send(`Hello, this is the root path!, YOURE ON ${config.DB_USERNAME}`);
+    res.send(`Hello, World`);
 });
 
 app.get('/api', (req, res) => {
-    res.send(`Hello, YOURE ON ${config.DB_USERNAME},NODE_ENV:${config.NODE_ENV}`);
+    res.send(`Hello, This API Made With Alif Zulfanur & 80% CHATGPT`);
 });
-
 
 app.use(ProductRoute);
 app.use(UserRoute);
 
-app.listen(5000, () => console.log("Server Up and Running..."));
+app.listen(8000, () => console.log("Server Up and Running..."));
