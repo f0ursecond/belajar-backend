@@ -71,3 +71,5 @@ headers: **`Accept: application/json`**
     }
 ]
 ```
+
+> **Note:** Untuk Endpoint yang lainya menyusul kalo lagi gabut xixi.

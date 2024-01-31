@@ -23,10 +23,17 @@ export const register = async (req, res) => {
     const newUser = await User.create({
       userId: uuidv4(),
       username: username,
+      password: hashedPassword,
     });
+
+    const mappedUser = {
+      userId: newUser.userId,
+      username: newUser.username,
+    };
+
     return res
       .status(201)
-      .json({ msg: "User Successfully Created", user: newUser });
+      .json({ msg: "User Successfully Created", user: mappedUser });
   } catch (error) {
     return res.status(400).json({ msg: `Error ${error}` });
   }
