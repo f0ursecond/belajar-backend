@@ -112,7 +112,7 @@ export const saveProduct = async (req, res) => {
             // });
 
             const upload = await uploadFile(fileData, {
-                publicKey: config.PUBLIC_KEY,
+                publicKey: config.KEYUPLOAD,
                 store: 'auto',
                 fileName: title,
                 metadata: {

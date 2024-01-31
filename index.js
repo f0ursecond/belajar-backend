@@ -3,7 +3,6 @@ import FileUpload from "express-fileupload";
 import cors from "cors";
 import ProductRoute from "./routes/ProductRoute.js";
 import UserRoute from "./routes/UserRoute.js";
-import config from "./config.js";
 
 const app = express();
 
@@ -19,7 +18,7 @@ app.use((req, res, next) => {
 
 // console.log(`NODE_ENV:${config.NODE_ENV}`)
 // console.log(`DB NAME:${config.DB_NAME}`)
-// console.log(`PUBLIC KEY:${config.PUBLIC_KEY}`)
+// console.log(`PUBLIC KEY:${config.KEYUPLOAD}`)
 
 app.get('/', (req, res) => {
     res.send(`Hello, World`);

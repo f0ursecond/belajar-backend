@@ -16,7 +16,7 @@ const config = {
     DB_USERNAME: process.env.DB_USERNAME || 'root',
     DB_PASSWORD: process.env.DB_PASSWORD || '',
     DB_HOST: process.env.DB_HOST || 'localhost',
-    PUBLIC_KEY: process.env.PUBLIC_KEY || '',
+    KEYUPLOAD: process.env.KEYUPLOAD || '',
 }
 
 export default config;
