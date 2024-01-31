@@ -3,6 +3,8 @@ import FileUpload from "express-fileupload";
 import cors from "cors";
 import ProductRoute from "./routes/ProductRoute.js";
 import UserRoute from "./routes/UserRoute.js";
+import config from "./config.js";
+
 
 const app = express();
 
@@ -16,12 +18,16 @@ app.use((req, res, next) => {
 });
 
 
+console.log(`NODE_ENV:${config.NODE_ENV}`)
+console.log(`DB NAME:${config.DB_NAME}`)
+
+
 app.get('/', (req, res) => {
-    res.send('Hello, this is the root path!');
+    res.send(`Hello, this is the root path!, YOURE ON ${config.DB_USERNAME}`);
 });
 
 app.get('/api', (req, res) => {
-    res.send('Hello, this /api!');
+    res.send(`Hello, YOURE ON ${config.DB_USERNAME},NODE_ENV:${config.NODE_ENV}`);
 });
 
 
