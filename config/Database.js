@@ -8,8 +8,8 @@ const db = new Sequelize(config.DB_NAME, config.DB_USERNAME, config.DB_PASSWORD,
   dialectModule: mysql2,
   logging: config.NODE_ENV === 'development' ? true : false,
   dialectOptions: {
-    connectTimeout: 60000,
-    requestTimeout: 60000,
+    connectTimeout: 80000,
+    requestTimeout: 80000,
   },
 });
 
