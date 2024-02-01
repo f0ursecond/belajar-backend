@@ -6,9 +6,10 @@ const db = new Sequelize(config.DB_NAME, config.DB_USERNAME, config.DB_PASSWORD,
   host: config.DB_HOST,
   dialect: "mysql",
   dialectModule: mysql2,
-  //logging: config.NODE_ENV === 'development' ? true : false,
+  logging: config.NODE_ENV === 'development' ? true : false,
   dialectOptions: {
-    requestTimeout: 50000,
+    connectTimeout: 60000,
+    requestTimeout: 60000,
   },
 });
 
