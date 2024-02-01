@@ -17,6 +17,7 @@ const config = {
     DB_PASSWORD: process.env.DB_PASSWORD || '',
     DB_HOST: process.env.DB_HOST || 'localhost',
     KEYUPLOAD: process.env.KEYUPLOAD || '',
+    KEYSECRET: process.env.KEYSECRET || '',
 }
 
 export default config;

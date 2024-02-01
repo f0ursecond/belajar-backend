@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 // console.log(`NODE_ENV:${config.NODE_ENV}`)
 // console.log(`DB NAME:${config.DB_NAME}`)
 // console.log(`PUBLIC KEY:${config.KEYUPLOAD}`)
+// console.log(`SECRET KEY:${config.KEYSECRET}`)
 
 app.get('/', (req, res) => {
     res.send(`Hello, World`);

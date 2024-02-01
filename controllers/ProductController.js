@@ -2,6 +2,7 @@ import Product from "../models/ProductModel.js";
 import path from "path";
 import fs from "fs";
 import jwt from "jsonwebtoken";
+import axios from "axios";
 import { uploadFile } from "@uploadcare/upload-client";
 import config from "../config.js";
 const secretKey = 'my_secret_key';
@@ -112,7 +113,7 @@ export const saveProduct = async (req, res) => {
             // });
 
             const upload = await uploadFile(fileData, {
-                publicKey: config.KEYUPLOAD,
+                publicKey: '7af6b79bc5d691a949f1',
                 store: 'auto',
                 fileName: title,
                 metadata: {
@@ -174,39 +175,47 @@ export const updateProduct = async (req, res) => {
             ? req.files.file
             : [req.files.file];
         for (const file of filesArray) {
-            const { size, name } = file;
-            const fileSize = size;
+            const fileData = file.data;
             const ext = path.extname(file.name);
-            const fileName = `${file.md5}${ext}`;
-            const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+            // const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
             const allowedType = [".png", ".jpg", ".jpeg"];
 
             if (!allowedType.includes(ext.toLowerCase())) {
                 return res.status(422).json({ msg: "Invalid Images" });
             }
 
-            if (fileSize > 5000000) {
+            if (file.size > 5000000) {
                 return res.status(422).json({ msg: "Image must be less than 5 MB" });
             }
 
-            await file.mv(`./public/images/${fileName}`, (err) => {
-                if (err) {
-                    console.error(err.message);
-                    return res.status(500).json({ msg: err.message });
+            // await file.mv(`./public/images/${fileName}`, (err) => {
+            //     if (err) {
+            //         console.error(err.message);
+            //         return res.status(500).json({ msg: err.message });
+            //     }
+            // });
+
+            const upload = await uploadFile(fileData, {
+                publicKey: '7af6b79bc5d691a949f1',
+                store: 'auto',
+                fileName: req.body.title,
+                metadata: {
+                    subsystem: 'uploader',
+                    pet: 'cat'
                 }
-            });
+            }, (err) => { if (err) return res.json(400).json({ msg: 'Error Upload File' }) })
 
             imageArray.push({
-                fileName,
+                upload,
             });
             imageUrl.push({
-                url
+                upload
             })
         }
     }
 
-    let mappedImageArray = imageArray.map(obj => obj.fileName);
-    let mappedImageUrl = imageUrl.map(obj => obj.url)
+    let mappedImageArray = imageArray.map(obj => obj.upload.cdnUrl);
+    let mappedImageUrl = imageUrl.map(obj => obj.upload.cdnUrl)
 
     const name = req.body.title;
     const category = req.body.category;
@@ -246,9 +255,28 @@ export const deleteProduct = async (req, res) => {
     });
     if (!product) return res.status(404).json({ msg: "No Data Found" });
 
+    let imageUrl = JSON.parse(product.imageUrl);
+    console.log(imageUrl)
+    let splited = imageUrl.map((e) => {
+        const segments = e.split('/');
+        return segments[segments.length - 2];
+    });
+
     try {
-        const filepath = `./public/images/${product.image}`;
-        fs.unlinkSync(filepath);
+        await Promise.all(splited.map(async (fileId) => {
+            console.log('file id cokkk ' + fileId)
+            try {
+                await axios.delete(`https://api.uploadcare.com/files/${fileId}/`, {
+                    headers: {
+                        Authorization: `Uploadcare.Simple ${config.KEYUPLOAD}:${config.KEYSECRET}`,
+                    },
+                });
+                console.log('Image Deleted')
+            } catch (error) {
+                console.error('Error deleting image:', error.message);
+            }
+        }),);
+
         await Product.destroy({
             where: {
                 id: req.params.id,
