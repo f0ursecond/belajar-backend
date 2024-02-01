@@ -74,4 +74,21 @@ headers: **`Accept: application/json`**
 ]
 ```
 
+## Delete Product
+
+endpoint : /products/1
+
+
+method : **`DELETE`**\
+authorization: **`Bearer Token`**\
+headers: **`Accept: application/json`**
+
+### Example Response :
+
+```
+{
+    "msg": "Product Deleted Successfuly"
+}
+```
+
 > **Note:** Untuk Endpoint yang lainya menyusul kalo lagi gabut xixi.
