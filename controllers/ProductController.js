@@ -220,8 +220,8 @@ export const updateProduct = async (req, res) => {
     const name = req.body.title;
     const category = req.body.category;
 
-    const defaultImageArray = JSON.parse(product.image);
-    const defaultImageUrlArray = JSON.parse(product.imageUrl);
+    const defaultImageArray = product.image;
+    const defaultImageUrlArray = product.imageUrl;
 
     let isArray = Array.isArray(defaultImageArray) || Array.isArray(defaultImageUrlArray)
 
