@@ -255,7 +255,7 @@ export const deleteProduct = async (req, res) => {
     });
     if (!product) return res.status(404).json({ msg: "No Data Found" });
 
-    let imageUrl = JSON.parse(product.imageUrl);
+    let imageUrl = product.imageUrl;
     console.log(imageUrl)
     let splited = imageUrl.map((e) => {
         const segments = e.split('/');
